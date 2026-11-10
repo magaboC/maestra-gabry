@@ -1,0 +1,23 @@
+MAESTRA GABRY - CONTATORE VISITE + STATISTICHE PRIVATE
+
+IMPORTANTE: questo pacchetto usa Netlify Functions e Netlify Blobs.
+NON basta trascinare una cartella ZIP nel deploy manuale: per installare le dipendenze e distribuire le funzioni serve un deploy tramite repository Git collegato a Netlify o Netlify CLI.
+
+PROCEDURA CONSIGLIATA
+1. Carica il contenuto della cartella del sito in un repository GitHub privato.
+2. In Netlify collega il repository al progetto maestragabry (oppure configura il deploy da repository se il progetto attuale e' manuale).
+3. Imposta la directory di pubblicazione su . (punto), le funzioni su netlify/functions; lascia che Netlify installi npm dependencies da package.json.
+4. In Netlify > Project configuration > Environment variables aggiungi STATS_PASSWORD con una password lunga e univoca. Non scrivere la password nei file HTML.
+5. Avvia un nuovo deploy e verifica https://maestragabry.netlify.app/api/visite (deve rispondere con JSON), poi visita la homepage.
+6. Per vedere le statistiche private apri https://maestragabry.netlify.app/statistiche.html e inserisci la password.
+
+ALTERNATIVA: usa Netlify CLI sul computer: npm install, netlify login, netlify link, netlify deploy --prod --build. Verifica che il progetto sia collegato al sito corretto prima del deploy.
+
+NOTE
+- Contatore a partire da zero dall'attivazione, non recupera le request storiche.
+- Visite stimate per sessione browser; visualizzazioni per pagina e sessione.
+- Il sistema non memorizza IP, identificatori persistenti o cookie.
+- Netlify Blobs e' un archivio persistente tra deploy, ma la scrittura concorrente e' gestita con retry e non garantisce contabilita' perfetta in caso di traffico elevato.
+- I conteggi sono indicativi e potrebbero includere bot o traffico automatico.
+- Solo la pagina statistiche e' privata nei dati: il link e' pubblico, l'API richiede password.
+- Se usi Netlify con caricamento manuale dello ZIP, le funzioni potrebbero non essere distribuite e il contatore mostrera' dati non disponibili.
