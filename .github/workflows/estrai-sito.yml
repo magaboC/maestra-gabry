@@ -1,0 +1,21 @@
+name: Estrai e pubblica i file del sito
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  estrai:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Estrai il sito dal pacchetto
+        run: |
+          unzip -o Maestra_Gabry_Con_Contatore_e_Statistiche.zip -d .
+          rm Maestra_Gabry_Con_Contatore_e_Statistiche.zip
+      - name: Salva i file nel repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Pubblica i file estratti del sito Maestra Gabry"
+          git push
